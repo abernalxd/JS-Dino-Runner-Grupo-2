@@ -24,27 +24,23 @@ class Dinosaur(Sprite):
     def update(self, user_input):
         if self.dino_running:
             self.run()
-        if self.dino_jumping:
+        elif self.dino_jumping:
             self.jump()
-        if self.dino_ducking:
+        elif self.dino_ducking:
             self.duck()
 
         if user_input[pygame.K_UP] and not self.dino_jumping:
             self.dino_jumping = True
             self.dino_running = False
             self.dino_ducking = False
+        elif user_input[pygame.K_DOWN] and not self.dino_jumping:
+            self.dino_jumping = False
+            self.dino_running = False
+            self.dino_ducking = True
         elif not self.dino_jumping or self.dino_ducking:
             self.dino_jumping = False
             self.dino_running = True
             self.dino_ducking = False        
-        if user_input[pygame.K_DOWN] and not self.dino_jumping:
-            self.dino_jumping = False
-            self.dino_running = False
-            self.dino_ducking = True
- #       elif not self.dino_ducking or self.dino_jumping:
-  #          self.dino_jumping = False
-   #         self.dino_running = True
-    #        self.dino_ducking = False
         if self.step_index >= 9:
             self.step_index = 0
 
