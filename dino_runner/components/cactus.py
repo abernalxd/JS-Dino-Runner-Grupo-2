@@ -2,8 +2,15 @@ from random import randint
 from .obstacle import Obstacle
 
 
-class Cactus(Obstacle):
-    def __init__(self, images):
-        type = randint(0, 2)
-        super().__init__(images, type)
+class SmallCactus(Obstacle):
+    def __init__(self, image):
+        self.type = randint(0, 2)
+        super().__init__(image, self.type)
         self.rect.y = 325
+
+
+class LargeCactus(Obstacle):
+    def __init__(self, image):
+        self.type = randint(0, 2)
+        super().__init__(image, self.type)
+        self.rect.y = 300
