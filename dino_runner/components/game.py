@@ -26,8 +26,7 @@ class Game:
         self.running = True
         while self.running:
             if not self.playing:
-                self.show_menu()
-#        pygame.display.quit()
+                self.show_menu()    
         pygame.quit()
 
     def run(self):
@@ -55,9 +54,9 @@ class Game:
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
-        self.score.draw(self.screen)
         self.player.draw(self.screen)
-        self.obstacle_manager.draw(self.screen)
+        self.obstacle_manager.draw(self)
+        self.score.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
         
@@ -72,37 +71,42 @@ class Game:
 
     def show_menu(self):
         self.screen.fill((255, 255, 255))
-        half_screen_height = SCREEN_HEIGHT // 2
-        half_screen_width = SCREEN_WIDTH // 2
-        if self.death_count == 0:
-            font = pygame.font.Font(FONT_STYLE, 30)
-            text = font.render('Press any key for start', True, (0, 0, 0))
-            text_rect = text.get_rect()
-            text_rect.center = (half_screen_width, half_screen_height)
-            self.screen.blit(text, text_rect)
-        elif self.death_count > 0:
-            font = pygame.font.Font(FONT_STYLE, 30)
-            text = font.render('Press any key for restart', True, (0, 0, 0))
-            text_s = font.render('Veces que haz muerto' + str(self.death_count), True, (0, 0, 0))
-            text_rect = text.get_rect()
-            text_rect.center = (half_screen_width, half_screen_height)
-            self.screen.blit(text, text_s, text_rect - 30)
-            pass
-        print(self.death_count)
-        self.screen.blit(ICON, (half_screen_width - 20, half_screen_height - 140))
-        pygame.display.update()
-        self.handle_menu_event()
+        
+        pos_center_x = SCREEN_WIDTH // 2
+        pos_center_y = SCREEN_HEIGHT // 2
 
-    def handle_menu_event(self):
+        font = pygame.font.Font(FONT_STYLE, 30)
+        
+        text = self.status_game(font)
+        
+        text_rect = text.get_rect()
+        text_rect.center = (pos_center_x, pos_center_y)
+        self.screen.blit(text, text_rect)
+
+        dino_rect = DINO_START.get_rect()
+        dino_rect.center = (pos_center_x, pos_center_y - 80)
+        self.screen.blit(DINO_START, dino_rect)
+
+        pygame.display.update()
+
+        self.handle_menu_events()
+
+    def handle_menu_events(self):
         for event in pygame.event.get():
-            if event.type == pygame.QUIT: 
+            if event.type == pygame.QUIT:
                 self.running = False
             elif event.type == pygame.KEYDOWN:
                 self.run()
     
-    def reset_obstacles(self):
-        self.obstacles = []
-
-    def on_death (self):
-        self.playing = False
-        self.death_count += 1
+    def status_game(self, font):
+        if self.death_count == 0:
+            text = font.render("Press any key to start", True, (0, 0, 0))
+        else:
+            text = font.render("Press any key to Restart", True, (0, 0, 0))
+            score = font.render(f"Your Score: {self.score.score}", True, (0, 0, 0))
+            score = font.render(f"Veces que haz muerto: {self.death_count}", True, (0, 0, 0))
+            score_rect = score.get_rect()
+            score_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
+            self.screen.blit(score, score_rect)
+        
+        return text
