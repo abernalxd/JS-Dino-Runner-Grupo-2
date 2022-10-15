@@ -8,7 +8,7 @@ class Score(Sprite):
 
     def update(self, game):
         self.score += 1
-        if self.score % 100 == 0:
+        if self.score % 500 == 0:
             game.game_speed += 1
     
     def draw(self, screen):
@@ -17,3 +17,6 @@ class Score(Sprite):
         text_rect = text.get_rect()
         text_rect.center = (1000, 50)
         screen.blit(text, text_rect)
+    
+    def reset_score(self):
+        self.score = 0

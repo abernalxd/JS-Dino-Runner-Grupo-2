@@ -72,4 +72,6 @@ HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
 DEFAULT_TYPE = "default"
 FONT_STYLE = "freesansbold.ttf"
-
+SOUNDS_DIR = os.path.join(os.path.dirname(__file__), "..", "sounds")
+SHIELD_TYPE = "shield"
+HAMMER_TYPE = "hammer"
